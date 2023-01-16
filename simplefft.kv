@@ -1,0 +1,252 @@
+#:kivy 2.1.0
+<Root>:
+    PageLayout:
+        BoxLayout:
+            id:viewer
+            orientation:'vertical'
+            size:root.width, root.height
+
+            Button:
+                id:record_button
+                text:'REC'
+                size_hint_y:0.2
+                size_hint_x:1.0
+                on_release:
+                    self.state = 'down'
+                    root.on_button()
+                    self.state = 'normal'
+
+        BoxLayout:
+            orientation:'vertical'
+            size:root.width, root.height
+
+            canvas.before:
+                Color:
+                    rgba:0, 0, 0, 0.9
+                Rectangle:
+                    pos:self.pos
+                    size:self.size
+
+            BoxLayout:
+                orientation:'horizontal'
+                size_hint_y:0.25
+
+                Label:
+                    text:'Min freq.[Hz]'
+                    font_size:36
+                TextInput:
+                    id:min_freq
+                    text:'0'
+                    font_size:50
+                    halign: 'center'
+                    input_filter:'float'
+                    padding_y:[50,0]
+                    on_text:root.change_axis()
+
+            BoxLayout:
+                orientation:'horizontal'
+                size_hint_y:0.25
+
+                Label:
+                    text:'Max freq.[Hz]'
+                    font_size:36
+                TextInput:
+                    id:max_freq
+                    text:'5000'
+                    font_size:50
+                    halign: 'center'
+                    input_filter:'float'
+                    padding_y:[50,0]
+                    on_text:root.change_axis()
+
+            BoxLayout:
+                orientation:'horizontal'
+                size_hint_y:0.25
+
+                Label:
+                    text:'Min Time[s]'
+                    font_size:36
+                TextInput:
+                    id:min_time
+                    text:'0'
+                    font_size:50
+                    halign: 'center'
+                    input_filter:'float'
+                    padding_y:[50,0]
+                    on_text:root.change_axis()
+
+            BoxLayout:
+                orientation:'horizontal'
+                size_hint_y:0.25
+
+                Label:
+                    text:'Max Time[s]'
+                    font_size:36
+                TextInput:
+                    id:max_time
+                    text:'1'
+                    font_size:50
+                    halign: 'center'
+                    input_filter:'float'
+                    padding_y:[50,0]
+                    on_text:root.change_axis()
+
+        BoxLayout:
+            orientation:'vertical'
+            size:root.width, root.height
+
+            canvas.before:
+                Color:
+                    rgba:0, 0, 0.3, 0.9
+                Rectangle:
+                    pos:self.pos
+                    size:self.size
+
+            BoxLayout:
+                orientation:'horizontal'
+                size_hint_y:0.17
+
+                Label:
+                    text:'Record time[s]'
+                    font_size:36
+                TextInput:
+                    id:record_time
+                    text:'1'
+                    font_size:50
+                    halign: 'center'
+                    input_filter:'float'
+                    padding_y:[50,0]
+                    on_text:
+                        root.change_record_time()
+
+            BoxLayout:
+                orientation:'horizontal'
+                size_hint_y:0.17
+
+                Label:
+                    text:'Frame size'
+                    font_size:36
+                TextInput:
+                    id:frame_size
+                    text:'1024'
+                    font_size:50
+                    halign: 'center'
+                    input_filter:'int'
+                    padding_y:[50,0]
+
+            BoxLayout:
+                orientation:'horizontal'
+                size_hint_y:0.17
+
+                Label:
+                    text:'Overlap[%]'
+                    font_size:36
+                TextInput:
+                    id:overlap
+                    text:'75'
+                    font_size:50
+                    halign: 'center'
+                    input_filter:'float'
+                    padding_y:[50,0]
+
+            BoxLayout:
+                orientation:'horizontal'
+                size_hint_y:0.17
+
+                Label:
+                    text:'Display Mode'
+                    font_size:36
+
+                ToggleButton:
+                    id:display_mode
+                    size_hint_y:0.5
+                    pos_hint: {'x': 0.5, 'y': 0.25}
+                    text:'FFT waveform'
+                    state:'down'
+                    on_release:
+                        root.change_display_mode()
+
+            BoxLayout:
+                orientation:'horizontal'
+                size_hint_y:0.17
+
+                Label:
+                    text:'Peak info.'
+                    font_size:36
+
+                ToggleButton:
+                    id:peak_info
+                    size_hint_y:0.5
+                    pos_hint: {'x': 0.5, 'y': 0.25}
+                    text:'OFF'
+                    state:'normal'
+                    on_release:
+                        root.change_peak_info()
+            BoxLayout:
+                orientation:'horizontal'
+                size_hint_y:0.1
+
+                Button:
+                    text:'Notices'
+                    on_press:root.manager.current = 'license'
+<StartingScreen>
+    canvas.before:
+        Color:
+            rgba:1, 1, 1, 1
+        Rectangle:
+            pos:self.pos
+            size:self.size
+
+    BoxLayout:
+        orientation:'vertical'
+
+        BoxLayout:
+            orientation:'vertical'
+
+
+            Image:
+                id:logo
+                size_hint_x:0.2
+                size_hint_y:0.2
+                pos_hint: {'x': 0.4, 'y': 0.4}
+                source:'icon.png'
+                opacity:1
+
+        BoxLayout:
+            orientation:'vertical'
+            size_hint_y:0.2
+
+            Label:
+                text:'Now Loading...'
+                color:(0,0,1,1)
+
+            Label:
+                text:'Copyright 2023 WATLAB All right Reserved.'
+                color:(0,0,0,1)
+
+            Label:
+                text:'https://watlab-blog.com/'
+                color:(0,0,0,1)
+
+<LicenseScreen>
+    BoxLayout:
+        orientation:'vertical'
+
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint_y:0.1
+
+            Button:
+                text:'Back to Main'
+                on_press: root.manager.current = 'main'
+
+        ScrollView:
+            bar_width:30
+
+            Label:
+                id:lic_document
+                size_hint_y:None
+                #height:self.texture_size[1]
+                text_size:root.width, None
+                size:self.texture_size
+                text:'FileNotFound...'
