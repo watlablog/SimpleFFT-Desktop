@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 from dspToolkit import DspToolkit
 import numpy as np
 from kivy.clock import Clock
+import os
 
 class Root(Screen):
     ''' Pythonで計算をした結果をmatplotlibでプロットする '''
@@ -306,7 +307,12 @@ class Root(Screen):
 
 class StartingScreen(Screen):
     ''' 起動時に読み込まれるページ '''
-    pass
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+        self.ids.logo.source = path_icon
+
 
 class LicenseScreen(Screen):
     ''' ファイルを読み込みLicense文を表示させるページ '''
@@ -314,17 +320,24 @@ class LicenseScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        with open('notices.txt', 'rt') as f:
+        path_notices = './notices.txt'
+        path_notices = os.path.join(os.path.dirname(__file__), path_notices)
+
+
+        with open(path_notices, 'rt') as f:
             lic = f.read()
         self.ids.lic_document.text = lic
         self.ids.lic_document.font_size = int(self.ids.lic_document.text_size[0] / 5)
-        print(self.ids.lic_document.font_size)
         pass
 
 
 class SimpleFFT(App):
     title = 'SimpleFFT ver.1.0.0'
-    icon = 'icon.png'
+
+    global path_icon
+
+    path_icon = './icon.png'
+    path_icon = os.path.join(os.path.dirname(__file__), path_icon)
 
     # デスクトップ環境上でモバイル画面の比率を検証するためにサイズ設定をしている（正式には外す）
     ratio = 8 / 12
